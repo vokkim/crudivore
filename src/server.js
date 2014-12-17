@@ -1,13 +1,16 @@
 var express = require('express')
 var Bacon = require('baconjs')
-var render = require('./render')
+var Crudivore = require('./crudivore')
 var app = express()
 
-function start() {
+function start(config, onSuccess) {
+  var render = Crudivore(config)
+
   app.set('port', (process.env.PORT || 5000))
 
-  app.listen(app.get('port'), function() {
+  var server = app.listen(app.get('port'), function() {
     console.log("Running on port " + app.get('port'))
+    if (onSuccess) onSuccess()
   })
 
   app.get('/render/*', function(req, res) {
@@ -28,6 +31,8 @@ function start() {
   app.get('/info/', function(req, res) {
     res.send(render.threadInfo())
   })
+
+  return server
 }
 
 module.exports = start

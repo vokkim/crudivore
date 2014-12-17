@@ -1,12 +1,17 @@
 {
   "name": "crudivore",
-  "description": "Small service for rendering JS heavy sites for search engines.",
+  "description": "Small service for rendering JS heavy sites for search engines",
   "version": "0.0.1",
   "dependencies": {
     "baconjs": "0.7.41",
     "express": "4.10.6",
     "lodash": "2.4.1",
     "phantom": "0.7.1"
+  },
+    "devDependencies": {
+    "mocha": "2.0.1",
+    "chai": "1.10.0",
+    "request": "2.51.0"
   },
   "author": {
     "name": "Mikko Vesikkala",
@@ -19,6 +24,5 @@
     "type": "git",
     "url": "https://github.com/vokkim/crudivore.git"
   },
-  "homepage": "https://github.com/vokkim/crudivore",
-  "devDependencies": {}
+  "homepage": "https://github.com/vokkim/crudivore"
 }
