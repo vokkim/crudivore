@@ -1,8 +1,9 @@
 var phantom = require('phantom')
 var Bacon = require('baconjs')
 var _ = require('lodash')
-
 var evaluate = require('./evaluate')
+
+var PHANTOMJS_PATH = './node_modules/phantomjs/bin/'
 
 module.exports = function(config) {
   config = _.defaults(config, {
@@ -99,7 +100,7 @@ function Crudivore(config) {
     var onExit = function(msg) {
       console.log('PHANTOM CRASHED: ', port + ' : ' + msg) //TODO Survive crash!
     }
-    return Bacon.fromCallback(phantom.create, '--ignore-ssl-errors=yes', '--load-images=no', '--ssl-protocol=any', { port: port, onExit: onExit }).toProperty()
+    return Bacon.fromCallback(phantom.create, '--ignore-ssl-errors=yes', '--load-images=no', '--ssl-protocol=any', { path: PHANTOMJS_PATH, port: port, onExit: onExit }).toProperty()
   }
 
   function threadInfo() {
