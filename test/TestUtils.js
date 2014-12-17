@@ -6,6 +6,10 @@ var server = require('../src/server')
 
 Promise.promisifyAll(request)
 
+Promise.onPossiblyUnhandledRejection(function(e, promise) {
+    throw e
+})
+
 exports.requestTestPage = function(page) {
   return request.getAsync('http://127.0.0.1:5000/render/http://127.0.0.1:5011/' + page)
   .then(function(response) {
