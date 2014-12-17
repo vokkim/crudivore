@@ -1,7 +1,10 @@
 var _ = require('lodash')
+var Promise = require('bluebird')
 var expect = require('chai').expect
 var express = require('express')
 var request = require('request')
+
+Promise.promisifyAll(request);
 
 var server = require('../src/server')
 
@@ -10,37 +13,55 @@ describe('Basic rendering', function() {
   setupTestServers({initialThreadCount: 1, timeout: 5000})
  
   it("Returns correct HTML", function(done) {
-    requestTestPage('simpleTest.html', function(error, response, body) {
-      expect(response.statusCode).to.equal(200)
-      expect(body).to.contain('Async content loaded!')
-      expect(body).not.to.contain('Loading')
-      done()
-    })
+    requestTestPage('simpleTest.html').then(function(response) {
+      expect(response[0].statusCode).to.equal(200)
+      expect(response[1]).to.contain('Async content loaded!')
+      expect(response[1]).not.to.contain('Loading')
+    }).finally(done)
   })
 
    it("Strips script tags", function(done) {
-    requestTestPage('simpleTest.html', function(error, response, body) {
-      expect(body).to.not.contain('<script>')
-      done()
-    })
+    requestTestPage('simpleTest.html').then(function(response) {
+      expect(response[1]).to.not.contain('<script>')
+    }).finally(done)
   })
 
   it("Starts up only one PhantomJS thread", function(done) {
-    requestThreadInfo(function(info) {
+    requestThreadInfo().then(function(info) {
       expect(info.length).to.equal(1)
-      done()
-    })
+    }).finally(done)
   })
 })
 
-function requestTestPage(page, done) {
-  request('http://127.0.0.1:5000/render/http://127.0.0.1:5011/' + page, done)
+describe('Concurrent requests', function() {
+  this.timeout(10000)
+  setupTestServers({initialThreadCount: 1, timeout: 5000})
+ 
+  it("Returns correct HTML", function(done) {
+    var current = Promise.resolve()
+    Promise.all([requestTestPage('simpleTest.html'), requestTestPage('simpleTest.html')])
+    .then(function(responses) {
+      expect(responses.length).to.equal(2)
+      _.each(responses, function(response) {
+        expect(response[0].statusCode).to.equal(200)
+        expect(response[1]).to.contain('Async content loaded!')
+      })
+    }).finally(done)
+  })
+
+  it("Starts up another PhantomJS thread", function(done) {
+    requestThreadInfo().then(function(info) {
+      expect(info.length).to.equal(2)
+    }).finally(done)
+  })
+})
+
+function requestTestPage(page) {
+  return request.getAsync('http://127.0.0.1:5000/render/http://127.0.0.1:5011/' + page)
 }
 
-function requestThreadInfo(done) {
-  request('http://127.0.0.1:5000/info/', function(error, response, body) {
-    done(JSON.parse(body))
-  })
+function requestThreadInfo() {
+  return request.getAsync('http://127.0.0.1:5000/info/').then(function(response) { return JSON.parse(response[1]) })
 }
 
 function setupTestServers(config) {
