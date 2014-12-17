@@ -10,9 +10,28 @@
   <div id="asyncContainer">Loading</div>
 
   <script>
+    function addMeta(name, content) {
+      var tag = document.createElement('meta')
+      tag.setAttribute('name', name)
+      tag.setAttribute('content', content)
+      document.getElementsByTagName('head')[0].appendChild(tag)
+    }
+    function setContent(content) {
+        document.getElementById('asyncContainer').innerHTML = content
+    }
     setTimeout(function() {
-      document.getElementById('asyncContainer').innerHTML = "Async content loaded!"
+      if (window.location.hash) {
+        setContent("Hash " + window.location.hash)
+        switch (window.location.hash) {
+          case "#!/notfound":
+            addMeta('http-status-code', "404")
+          break
+        }
+      } else {
+        setContent("Async content loaded!")
+      }
       window.prerenderReady = true
+
     }, 800)
   </script>
   </body>

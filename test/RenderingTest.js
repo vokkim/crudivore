@@ -6,7 +6,7 @@ var utils = require('./TestUtils')
 
 describe('Basic rendering', function() {
   this.timeout(10000)
-  utils.setupTestServers({initialThreadCount: 1, timeout: 5000})
+  utils.setupTestServers({initialThreadCount: 1})
  
   it("Returns correct HTML", function(done) {
     utils.requestTestPage('simpleTest.html').then(function(response) {
@@ -25,6 +25,23 @@ describe('Basic rendering', function() {
   it("Starts up only one PhantomJS thread", function(done) {
     utils.requestThreadInfo().then(function(info) {
       expect(info.length).to.equal(1)
+    }).finally(done)
+  })
+
+  it("Supports hashbang URLs", function(done) {
+    utils.requestTestPage('simpleTest.html#!/hashtest').then(function(response) {
+      expect(response.body).to.contain('Hash #!/hashtest')
+    }).finally(done)
+  })
+})
+
+describe('Status codes', function() {
+  this.timeout(10000)
+  utils.setupTestServers({})
+ 
+  it("Sets the response status code from 'http-status-code' meta tag", function(done) {
+    utils.requestTestPage('simpleTest.html#!/notfound').then(function(response) {
+      expect(response.status).to.equal(404)
     }).finally(done)
   })
 })
