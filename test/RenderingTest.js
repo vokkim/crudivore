@@ -14,15 +14,15 @@ describe('Basic rendering', function() {
  
   it("Returns correct HTML", function(done) {
     requestTestPage('simpleTest.html').then(function(response) {
-      expect(response[0].statusCode).to.equal(200)
-      expect(response[1]).to.contain('Async content loaded!')
-      expect(response[1]).not.to.contain('Loading')
+      expect(response.status).to.equal(200)
+      expect(response.body).to.contain('Async content loaded!')
+      expect(response.body).not.to.contain('Loading')
     }).finally(done)
   })
 
    it("Strips script tags", function(done) {
     requestTestPage('simpleTest.html').then(function(response) {
-      expect(response[1]).to.not.contain('<script>')
+      expect(response.body).to.not.contain('<script>')
     }).finally(done)
   })
 
@@ -43,8 +43,8 @@ describe('Concurrent requests', function() {
     .then(function(responses) {
       expect(responses.length).to.equal(2)
       _.each(responses, function(response) {
-        expect(response[0].statusCode).to.equal(200)
-        expect(response[1]).to.contain('Async content loaded!')
+        expect(response.status).to.equal(200)
+        expect(response.body).to.contain('Async content loaded!')
       })
     }).finally(done)
   })
@@ -58,10 +58,17 @@ describe('Concurrent requests', function() {
 
 function requestTestPage(page) {
   return request.getAsync('http://127.0.0.1:5000/render/http://127.0.0.1:5011/' + page)
+    .then(function(response) {
+      return {
+        status: response[0].statusCode,
+        body: response[1]
+      }
+    })
 }
 
 function requestThreadInfo() {
-  return request.getAsync('http://127.0.0.1:5000/info/').then(function(response) { return JSON.parse(response[1]) })
+  return request.getAsync('http://127.0.0.1:5000/info/')
+    .then(function(response) { return JSON.parse(response[1]) })
 }
 
 function setupTestServers(config) {
