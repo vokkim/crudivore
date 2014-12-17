@@ -6,9 +6,10 @@
     "baconjs": "0.7.41",
     "express": "4.10.6",
     "lodash": "2.4.1",
-    "phantom": "0.7.1"
+    "phantom": "0.7.1",
+    "phantomjs": "~1.9.12"
   },
-    "devDependencies": {
+  "devDependencies": {
     "mocha": "2.0.1",
     "chai": "1.10.0",
     "request": "2.51.0",
