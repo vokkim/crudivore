@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var server = require('./src/server')
 
 var config = {
