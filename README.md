@@ -18,8 +18,23 @@ Install dependencies:
 Start the server:
 
     ./index.js
+    
+    
 
-### API
+### REST API
+
+`/crawl/<URL>` Render the requested page and return the resulting HTML
+
+    Example:
+    curl http://127.0.0.1:5000/render/https://www.google.com
+
+`/info/` Get a simple JSON object to monitor the status of Crudivore service
+
+    Example:
+    curl http://127.0.0.1:5000/info/
+
+<img src="https://raw.github.com/vokkim/crudivore/master/sequence-graph.png" width="750px" />
+
 
 ### Page ready
 
