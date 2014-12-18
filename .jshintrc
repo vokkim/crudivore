@@ -1,4 +1,9 @@
 {
 	"asi": true,
-	"quotmark": "single"
+	"quotmark": "single",
+	"latedef": "nofunc",
+	"nonbsp": true,
+	"node": true,
+	"undef": true,
+	"unused": true
 }

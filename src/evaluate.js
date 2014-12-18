@@ -1,3 +1,4 @@
+/* jshint browser:true */
 /*
   These functions are evaluated by PhantomJS within the target page.
   See http://phantomjs.org/api/webpage/method/evaluate.html for detailed information.

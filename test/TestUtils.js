@@ -1,4 +1,4 @@
-var _ = require('lodash')
+/*global before,after */
 var promise = require('bluebird')
 var express = require('express')
 var request = require('request')
@@ -6,7 +6,7 @@ var server = require('../src/server')
 
 promise.promisifyAll(request)
 
-promise.onPossiblyUnhandledRejection(function(e, promise) {
+promise.onPossiblyUnhandledRejection(function(e) {
     throw e
 })
 

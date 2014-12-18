@@ -1,7 +1,8 @@
+/*global describe,it*/
+
 var _ = require('lodash')
 var promise = require('bluebird')
 var expect = require('chai').expect
-var request = require('request')
 var utils = require('./TestUtils')
 
 describe('Basic rendering', function() {
@@ -58,7 +59,6 @@ describe('Concurrent requests', function() {
   utils.setupTestServers({initialThreadCount: 1, timeout: 5000})
  
   it('Returns correct HTML', function(done) {
-    var current = promise.resolve()
     promise.all([utils.requestTestPage('simpleTest.html'), utils.requestTestPage('simpleTest.html')])
     .then(function(responses) {
       expect(responses.length).to.equal(2)
