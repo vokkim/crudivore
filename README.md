@@ -34,13 +34,37 @@ Start the server:
 <img src="https://raw.github.com/vokkim/crudivore/master/sequence-graph.png" width="750px" />
 
 
-### Page ready
+### Communicating from the page being rendered to Crudivore
 
-By default, Crudivore waits until the defined timout for the page to be ready. The page can inform Crudivore that it is ready by setting a global variable.
+Crudivore works on existing pages without any modifications. The page may want to pass information to Crudivore and may do so with the global variable `window.crudivore`:
 
-Inside the page being rendered, when everything is ready, set:
+    window.crudivore = {
+        pageReady: <boolean>,
+        status: <int>,
+        headers: {
+            "<headername>": "<headercontent>"
+        }
+    }
 
-    window.pageReady = true
+#### pageReady
+
+Setting `window.crudivore.pageReady` to true tells Crudivore that the page has completed loading and rendering. This is not mandatory: if this parameter is never set, Crudivore waits until the timeout.
+
+#### status
+
+Causes Crudivore to return this http status code instead of 200. For example, many single page apps contain a catch-all route that displays a [soft 404](http://en.wikipedia.org/wiki/HTTP_404#Soft_404). Added `window.crudivore.status = 404` causes Crudivore to turn that into a hard 404, which is better for search enginges.
+
+#### headers
+
+The headers object allows setting custom headers from frontend code. An example would be a redirect:
+
+    window.crudivore = {
+        pageReady: true,
+        status: 302,
+        headers: {
+            "Location": "http://mysite.com/newurl"
+        }
+    }
 
 ### Configuration
 Crudivore can be configured with environment variables:
