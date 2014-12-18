@@ -20,7 +20,7 @@ function start(config, onSuccess) {
     var renderingResult = render.renderPage(pageUrl)
     renderingResult.onError(function(e) {
       console.log(e)
-      res.status(400).end()
+      res.status(500).end()
     })
 
     renderingResult.onValue(function(result) {
