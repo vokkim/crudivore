@@ -4,7 +4,7 @@
 */
 
 function pageReady() {
-  return window.prerenderReady
+  return window.pageReady
 }
 
 function getHeaders() {

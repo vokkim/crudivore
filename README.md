@@ -18,8 +18,6 @@ Install dependencies:
 Start the server:
 
     ./index.js
-    
-    
 
 ### REST API
 
@@ -37,6 +35,12 @@ Start the server:
 
 
 ### Page ready
+
+By default, Crudivore waits until the defined timout for the page to be ready. The page can inform Crudivore that it is ready by setting a global variable.
+
+Inside the page being rendered, when everything is ready, set:
+
+    window.pageReady = true
 
 ### Configuration
 Crudivore can be configured with environment variables:
