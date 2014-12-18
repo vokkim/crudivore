@@ -18,14 +18,14 @@
 
     setTimeout(function() {
       if (window.location.hash) {
-        setContent("Hash " + window.location.hash)
+        setContent('Hash ' + window.location.hash)
         switch (window.location.hash) {
-          case "#!/notfound":
+          case '#!/notfound':
             window.crudivore.status = 404
           break
         }
       } else {
-        setContent("Async content loaded!")
+        setContent('Async content loaded!')
       }
       window.crudivore.pageReady = true
 

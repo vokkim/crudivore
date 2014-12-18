@@ -4,11 +4,11 @@
 */
 
 function pageReady() {
-  return typeof window.crudivore === "object" && window.crudivore.pageReady === true
+  return typeof window.crudivore === 'object' && window.crudivore.pageReady === true
 }
 
 function getResultObject() {
-  return typeof window.crudivore === "object" ? window.crudivore : {}
+  return typeof window.crudivore === 'object' ? window.crudivore : {}
 }
 
 function getContent() {

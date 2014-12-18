@@ -73,7 +73,7 @@ function Crudivore(config) {
       return result.map(function(data) {
         return {
           status: data.result.status || 200,
-          headers: typeof data.result.headers === "object" ? data.result.headers : {},
+          headers: typeof data.result.headers === 'object' ? data.result.headers : {},
           content: data.content
         }
       })
@@ -95,7 +95,7 @@ function Crudivore(config) {
   function findFreePort() {
     //TODO Check that the port is actually free!
     for (var i = config.phantomPortRange.start; i < config.phantomPortRange.end; i++) {
-      var portIsFree = _.all(threads, function(thread) { return thread.port !== i})
+      var portIsFree = _.all(threads, function(thread) { return thread.port !== i}) //jshint ignore:line
       if (portIsFree) { return i }
     }
     throw 'Unable to find free port!'

@@ -1,12 +1,12 @@
 var _ = require('lodash')
-var Promise = require('bluebird')
+var promise = require('bluebird')
 var express = require('express')
 var request = require('request')
 var server = require('../src/server')
 
-Promise.promisifyAll(request)
+promise.promisifyAll(request)
 
-Promise.onPossiblyUnhandledRejection(function(e, promise) {
+promise.onPossiblyUnhandledRejection(function(e, promise) {
     throw e
 })
 

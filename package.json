@@ -10,10 +10,11 @@
     "phantomjs": "~1.9.12"
   },
   "devDependencies": {
-    "mocha": "2.0.1",
+    "bluebird": "2.3.11",
     "chai": "1.10.0",
-    "request": "2.51.0",
-    "bluebird": "2.3.11"
+    "jshint": "^2.5.10",
+    "mocha": "2.0.1",
+    "request": "2.51.0"
   },
   "author": {
     "name": "Mikko Vesikkala",
@@ -29,7 +30,8 @@
   "homepage": "https://github.com/vokkim/crudivore",
   "scripts": {
     "test": "./runtests.sh",
-    "start": "node index.js"
+    "start": "node index.js",
+    "jshint": "./node_modules/jshint/bin/jshint *.js **/*.js"
   },
   "bin": {
     "crudivore": "index.js"
