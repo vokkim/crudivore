@@ -4,25 +4,11 @@
 */
 
 function pageReady() {
-  return window.pageReady
+  return typeof window.crudivore === "object" && window.crudivore.pageReady === true
 }
 
-function getHeaders() {
-  var meta = document.getElementsByTagName('meta')
-  var result = []
-  for (var a=0; a < meta.length; a++) {
-    if (meta[a].name === "prerender-header" || meta[a].name === "http-header") return result.push(meta[a].content)
-  }
-  return result
-}
-
-
-function getStatus() {
-  var meta = document.getElementsByTagName('meta')
-  for (var a=0; a < meta.length; a++) {
-    if (meta[a].name === "prerender-status-code" || meta[a].name === "http-status-code") return meta[a].content
-  }
-  return 200
+function getResultObject() {
+  return typeof window.crudivore === "object" ? window.crudivore : {}
 }
 
 function getContent() {
@@ -36,7 +22,6 @@ function getContent() {
 
 module.exports = {
   pageReady: pageReady,
-  getHeaders: getHeaders,
-  getStatus: getStatus,
+  getResultObject: getResultObject,
   getContent: getContent
 }

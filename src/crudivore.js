@@ -65,13 +65,18 @@ function Crudivore(config) {
           return new Bacon.Error('Failed to open page: ' + pageUrl)
         }
         return Bacon.combineTemplate({
-          status: Bacon.fromCallback(page.evaluate, evaluate.getStatus),
+          result: Bacon.fromCallback(page.evaluate, evaluate.getResultObject),
           content: Bacon.fromCallback(page.evaluate, evaluate.getContent),
-          headers: Bacon.fromCallback(page.evaluate, evaluate.getHeaders)
         })
       })
 
-      return result
+      return result.map(function(data) {
+        return {
+          status: data.result.status || 200,
+          headers: typeof data.result.headers === "object" ? data.result.headers : {},
+          content: data.content
+        }
+      })
     })
   }
 
