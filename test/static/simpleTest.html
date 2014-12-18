@@ -23,6 +23,12 @@
           case '#!/notfound':
             window.crudivore.status = 404
           break
+          case '#!/redirect':
+            window.crudivore.status = 302
+            window.crudivore.headers = {
+              "Location": "http://google.com"
+            }
+          break
         }
       } else {
         setContent('Async content loaded!')

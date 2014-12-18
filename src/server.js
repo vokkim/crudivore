@@ -1,6 +1,7 @@
 var express = require('express')
 var Bacon = require('baconjs')
 var Crudivore = require('./crudivore')
+var _ = require('lodash')
 var app = express()
 
 function start(config, onSuccess) {
@@ -24,6 +25,9 @@ function start(config, onSuccess) {
     })
 
     renderingResult.onValue(function(result) {
+      _(result.headers).each(function(value, name) {
+        res.setHeader(name, value)
+      })
       res.status(result.status).send(result.content)
     })
   })

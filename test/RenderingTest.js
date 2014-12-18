@@ -39,9 +39,16 @@ describe('Status codes', function() {
   this.timeout(10000)
   utils.setupTestServers({})
  
-  it('Sets the response status code from "http-status-code" meta tag', function(done) {
+  it('Sets the response status code from window.crudivore.status variable', function(done) {
     utils.requestTestPage('simpleTest.html#!/notfound').then(function(response) {
       expect(response.status).to.equal(404)
+    }).finally(done)
+  })
+
+  it('Sets the response header from window.crudivore.headers object', function(done) {
+    utils.requestTestPage('simpleTest.html#!/redirect').then(function(response) {
+      expect(response.status).to.equal(302)
+      expect(response.headers.location).to.equal('http://google.com')
     }).finally(done)
   })
 })

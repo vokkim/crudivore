@@ -11,10 +11,14 @@ promise.onPossiblyUnhandledRejection(function(e, promise) {
 })
 
 exports.requestTestPage = function(page) {
-  return request.getAsync('http://127.0.0.1:5000/render/http://127.0.0.1:5011/' + encodeURIComponent(page))
+  return request.getAsync({
+    uri: 'http://127.0.0.1:5000/render/http://127.0.0.1:5011/' + encodeURIComponent(page),
+    followRedirect: false
+  })
   .then(function(response) {
     return {
       status: response[0].statusCode,
+      headers: response[0].headers,
       body: response[1]
     }
   })
