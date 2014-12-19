@@ -67,12 +67,13 @@ function Crudivore(config) {
         return Bacon.combineTemplate({
           result: Bacon.fromCallback(page.evaluate, evaluate.getResultObject),
           content: Bacon.fromCallback(page.evaluate, evaluate.getContent),
+          status: Bacon.fromCallback(page.evaluate, evaluate.selfXHRStatus)
         })
       })
 
       return result.map(function(data) {
         return {
-          status: data.result.status || 200,
+          status: data.result.status || data.status || 200,
           headers: typeof data.result.headers === 'object' ? data.result.headers : {},
           content: data.content
         }

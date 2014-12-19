@@ -75,3 +75,14 @@ describe('Concurrent requests', function() {
     }).finally(done)
   })
 })
+
+describe('Error handling', function() {
+  this.timeout(10000)
+  utils.setupTestServers({initialThreadCount: 1, timeout: 5000})
+
+  it('Shows 404 when requested page does not exist', function(done) {
+    utils.requestTestPage('thisDoesNotExist.html').then(function(response) {
+      expect(response.status).to.equal(404)
+    }).finally(done)
+  })
+})

@@ -21,8 +21,17 @@ function getContent() {
   return document.getElementsByTagName('html')[0].outerHTML
 }
 
+function selfXHRStatus() {
+  var request = new XMLHttpRequest();
+  request.open('HEAD', document.location.href, false);  // `false` makes the request synchronous
+  request.send(null);
+
+  return request.status
+}
+
 module.exports = {
   pageReady: pageReady,
   getResultObject: getResultObject,
-  getContent: getContent
+  getContent: getContent,
+  selfXHRStatus: selfXHRStatus
 }
