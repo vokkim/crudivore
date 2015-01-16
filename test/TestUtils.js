@@ -40,7 +40,7 @@ exports.setupTestServers = function(threadCount) {
   })
   before(function(done) {
     appServer = fork('./index', [], {env: childEnv})
-    setTimeout(done, 1000)
+    setTimeout(done, 1000) //TODO Nasty timeout, could look stdout for server startup instead?
   })
 
   after(function() {
