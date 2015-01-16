@@ -93,3 +93,24 @@ describe('Error handling', function() {
     }).finally(done)
   })
 })
+
+describe('PhantomJS crash', function() {
+  this.timeout(10000)
+  utils.setupTestServers(1)
+
+  it('Survives crash', function(done) {
+    utils.requestTestPage('timeoutTest.html').then(function(response) {
+      expect(response.status).to.equal(200)
+      expect(response.body).to.contain('Timeout test')
+    }).finally(done)
+
+    killPhantomJS() // While the test is requesting the page, kill only PhantomJS instance
+  })
+
+  function killPhantomJS() {
+    utils.requestThreadInfo().then(function(info) {
+      if (info.length !== 1) throw 'More than one PhantomJS worker running: ' + info.length
+      process.kill(info[0].pid)
+    })
+  }
+})

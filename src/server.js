@@ -34,7 +34,9 @@ function start(config, onSuccess) {
   })
 
   app.get('/info/', function(req, res) {
-    res.send(render.threadInfo())
+    render.threadInfo().onValue(function(info) {
+      res.send(info)
+    })
   })
 
   return server

@@ -110,12 +110,13 @@ function Crudivore(config) {
   }
 
   function threadInfo() {
-    return _.map(threads, function(thread) {
-      return {
+    return Bacon.combineAsArray(_.map(threads, function(thread) {
+      return Bacon.combineTemplate({
+        pid: thread.phantom.map('.process.pid'),
         port: thread.port,
         status: thread.available ? 'available' : 'busy'
-      }
-    })
+      })
+    })).take(1)
   }
 }
 
