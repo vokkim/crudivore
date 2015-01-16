@@ -7,7 +7,7 @@ var utils = require('./TestUtils')
 
 describe('Basic rendering', function() {
   this.timeout(10000)
-  utils.setupTestServers({initialThreadCount: 1})
+  utils.setupTestServers(3)
  
   it('Returns correct HTML', function(done) {
     utils.requestTestPage('simpleTest.html').then(function(response) {
@@ -23,9 +23,9 @@ describe('Basic rendering', function() {
     }).finally(done)
   })
 
-  it('Starts up only one PhantomJS thread', function(done) {
+  it('Starts up three PhantomJS threads', function(done) {
     utils.requestThreadInfo().then(function(info) {
-      expect(info.length).to.equal(1)
+      expect(info.length).to.equal(3)
     }).finally(done)
   })
 
@@ -38,7 +38,7 @@ describe('Basic rendering', function() {
 
 describe('Status codes', function() {
   this.timeout(10000)
-  utils.setupTestServers({})
+  utils.setupTestServers(1)
  
   it('Sets the response status code from window.crudivore.status variable', function(done) {
     utils.requestTestPage('simpleTest.html#!/notfound').then(function(response) {
@@ -52,11 +52,18 @@ describe('Status codes', function() {
       expect(response.headers.location).to.equal('http://google.com')
     }).finally(done)
   })
+
+  it('Starts up only one PhantomJS thread', function(done) {
+    utils.requestThreadInfo().then(function(info) {
+      expect(info.length).to.equal(1)
+    }).finally(done)
+  })
+
 })
 
 describe('Concurrent requests', function() {
   this.timeout(10000)
-  utils.setupTestServers({initialThreadCount: 1, timeout: 5000})
+  utils.setupTestServers()
  
   it('Returns correct HTML', function(done) {
     promise.all([utils.requestTestPage('simpleTest.html'), utils.requestTestPage('simpleTest.html')])
@@ -78,7 +85,7 @@ describe('Concurrent requests', function() {
 
 describe('Error handling', function() {
   this.timeout(10000)
-  utils.setupTestServers({initialThreadCount: 1, timeout: 5000})
+  utils.setupTestServers(1)
 
   it('Shows 404 when requested page does not exist', function(done) {
     utils.requestTestPage('thisDoesNotExist.html').then(function(response) {

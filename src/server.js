@@ -1,10 +1,11 @@
 var express = require('express')
 var Crudivore = require('./crudivore')
 var _ = require('lodash')
-var app = express()
 var log = require('./logger')
 
 function start(config, onSuccess) {
+  var app = express()
+
   var render = Crudivore(config)
 
   app.set('port', (process.env.PORT || 5000))

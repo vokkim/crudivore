@@ -1,8 +1,10 @@
 /*global before,after */
 var promise = require('bluebird')
 var express = require('express')
+var _ = require('lodash')
 var request = require('request')
 var server = require('../src/server')
+var fork = require('child_process').fork
 
 promise.promisifyAll(request)
 
@@ -29,17 +31,21 @@ exports.requestThreadInfo = function() {
   .then(function(response) { return JSON.parse(response[1]) })
 }
 
-exports.setupTestServers = function(config) {
-  var contentServer, appServer;
-  before(function(done) {
-    appServer = server(config, done)
-  })
+exports.setupTestServers = function(threadCount) {
+  var contentServer, appServer
+  var childEnv = _.merge({CRUDIVORE_INITIAL_THREAD_COUNT: threadCount || 1}, process.env)
+
   before(function(done) {
     contentServer = initTestServer(done)
   })
+  before(function(done) {
+    appServer = fork('./index', [], {env: childEnv})
+    setTimeout(done, 1000)
+  })
+
   after(function() {
     contentServer.close()
-    appServer.close()
+    appServer.kill()
   })
 }
 
