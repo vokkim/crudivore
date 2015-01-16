@@ -2,7 +2,7 @@ var phantom = require('phantom')
 var Bacon = require('baconjs')
 var _ = require('lodash')
 var evaluate = require('./evaluate')
-
+var log = require('./logger')
 var PHANTOMJS_PATH = './node_modules/phantomjs/bin/'
 
 module.exports = function(config) {
@@ -27,7 +27,7 @@ function Crudivore(config) {
   function renderPage(pageUrl) {
     var myThread = _.find(threads, 'available')
     if (!myThread) {
-      console.log('Cant find open thread, creating a new')
+      log.info('Cant find open thread, creating a new')
       myThread = createThread()
       threads.push(myThread)
     }
@@ -55,7 +55,7 @@ function Crudivore(config) {
       .filter(function(isReady) { return isReady === true })
 
       var evaluationTimeout = phantomSuccess.bufferWithTime(config.timeout).map(_.first).doAction(function() {
-        console.log('Evaluation timeout ', pageUrl)
+        log.debug('Evaluation timeout ', pageUrl)
       })
 
       var ready = evaluationReady.merge(phantomError).merge(evaluationTimeout)
@@ -73,7 +73,7 @@ function Crudivore(config) {
 
       return result.map(function(data) {
         return {
-          status: data.result.status || data.status || 200,
+          status: data.result.status || data.status || 200,
           headers: typeof data.result.headers === 'object' ? data.result.headers : {},
           content: data.content
         }
@@ -104,7 +104,7 @@ function Crudivore(config) {
 
   function createPhantomInstance(port) {
     var onExit = function(msg) {
-      console.log('PHANTOM CRASHED: ', port + ' : ' + msg) //TODO Survive crash!
+      log.error('PHANTOM CRASHED: ', port + ' : ' + msg) //TODO Survive crash!
     }
     return Bacon.fromCallback(phantom.create, '--ignore-ssl-errors=yes', '--load-images=no', '--ssl-protocol=any', { path: PHANTOMJS_PATH, port: port, onExit: onExit }).toProperty()
   }
