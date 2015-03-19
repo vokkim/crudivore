@@ -20,15 +20,61 @@ Start the server:
 
 #### REST API
 
-`/render/<URL>` Render the requested page and return the resulting HTML
+<a name="crudivore_render"></a>
+[`/render/<URL>`](#crudivore_render) 
+ Render the requested page and return the resulting HTML
 
     Example:
     curl http://127.0.0.1:5000/render/https://www.google.com
 
-`/info/` Get a simple JSON object to monitor the status of Crudivore service
+<a name="crudivore_info"></a>
+[`/info/`](#crudivore_info) 
+ Get a simple JSON object to monitor the status of Crudivore service
 
     Example:
     curl http://127.0.0.1:5000/info/
+
+    
+```
+                                                                                                                    
+      +-------+                         +------------------+                    +---------+           +---------+
+      |Crawler|                         |Application server|                    |Crudivore|           |PhantomJS|
+      +---+---+                         +--------+---------+                    +---+-----+           +---------+
+          |                                      |                                  |                      |
+          | GET                                  |                                  |                      |
+          | app.com/?_escaped_fragment_=!/stuff  |                                  |                      |
+          +------------------------------------> |                                  |                      |
+          |                                      |                                  |                      |
+          |                                      | GET                              |                      |
+          |                                      | /render/http://app.com|#!/stuff  |                      |
+          |                                      +--------------------------------> |                      |
+          |                                      |                                  |                      |
+          |                                      |                                  | GET                  |
+          |                                      |                                  | app.com/#!/stuff     |
+          |                                      |                                  +--------------------> |
+          |                                      |                                  |                      |
+          |                                      |                                  |              SUCCESS |
+          |                                      |                                  | <--------------------+
+          |                                      |                                  |                      |
+          |                                      |                                  | Is the page ready?   |
+          |                                      |                                  +--------------------> |
+          |                                      |                                  |                      |
+          |                                      |                                  |                Ready |
+          |                                      |                                  | <--------------------+
+          |                                      |                                  |                      |
+          |                                      |                                  | Page content, please |
+          |                                      |                                  +--------------------> |
+          |                                      |                                  |                      |
+          |                                      |                                  |            Page HTML |
+          |                                      |                                  | <--------------------+
+          |                                      |                                  |
+          |                                      |                        Page HTML |
+          |                                      | <--------------------------------+
+          |                                      |
+          |                            Page HTML |
+          |  <-----------------------------------+
+          +
+``` 
 
 #### Communicating from the page being rendered to Crudivore
 
