@@ -1,7 +1,7 @@
 Crudivore
 =========
 
-[![Build Status](https://travis-ci.org/Vokkim/crudivore.svg?branch=master)](https://travis-ci.org/Vokkim/crudivore)
+[![Build Status](https://travis-ci.org/vokkim/crudivore.svg?branch=master)](https://travis-ci.org/vokkim/crudivore)
 
 Crudivore is a small service for rendering JS heavy sites for search engines.
 
